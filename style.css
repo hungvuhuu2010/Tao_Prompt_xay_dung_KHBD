@@ -471,7 +471,7 @@ button {
 }
 
 .form-group label {
-    font-size: 12px;
+    font-size: 14px;
 
     font-weight: bold;
 }
@@ -490,7 +490,7 @@ textarea {
 
     color: var(--text);
 
-    font-size: 12px;
+    font-size: 14px;
 
     outline: none;
 }
@@ -506,8 +506,8 @@ textarea:focus {
 
 textarea {
     min-height: 100px;
-
     resize: vertical;
+line-height: 1.6
 }
 
 
