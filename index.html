@@ -1,31 +1,45 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Trợ lý tạo Prompt thiết kế hoạt động dạy học</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="stylesheet" href="style.css">
+    <title>Trợ lý thiết kế hoạt động dạy học</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
 </head>
+
 
 <body>
 
 <div class="app">
 
-    <!-- ================= HEADER ================= -->
+
+    <!-- ==================================================
+         HEADER
+    =================================================== -->
 
     <header class="header">
 
         <div class="header-inner">
 
             <h1>
-                Trợ lý tạo Prompt thiết kế hoạt động dạy học
+                Trợ lý thiết kế hoạt động dạy học
             </h1>
 
             <p>
-                Hỗ trợ giáo viên tạo Prompt để AI thiết kế hoạt động học tập
-                theo hướng học sinh hoạt động nhiều và thực chất.
+                Hỗ trợ giáo viên xây dựng kế hoạch bài giảng
+                và phiếu bài tập bằng Prompt AI.
             </p>
 
         </div>
@@ -33,369 +47,176 @@
     </header>
 
 
+
     <main class="container">
 
 
         <!-- ==================================================
-             SECTION 1
+             TAB NAVIGATION
         =================================================== -->
 
-        <section class="card">
+        <nav class="tabs">
 
-            <div class="section-title">
-
-                <span class="section-number">
-                    1
-                </span>
-
-                <div>
-                    <h2>Lựa chọn nhiệm vụ</h2>
-
-                    <p>
-                        Chọn nhiệm vụ tương ứng với lượt làm việc
-                        trong cuộc trò chuyện với AI.
-                    </p>
-                </div>
-
-            </div>
+            <button
+                type="button"
+                class="tab-button active"
+                data-tab="general"
+            >
+                Thông tin chung
+            </button>
 
 
-            <!-- MỤC TIÊU CỐT LÕI -->
-
-            <div class="core-goal">
-
-                <div class="core-label">
-                    MỤC TIÊU CỐT LÕI
-                </div>
-
-                <div class="core-text">
-                    HỌC SINH HOẠT ĐỘNG NHIỀU –
-                    HOẠT ĐỘNG THỰC CHẤT –
-                    KHÔNG HOẠT ĐỘNG NHÓM HÌNH THỨC
-                </div>
-
-            </div>
+            <button
+                type="button"
+                class="tab-button"
+                data-tab="lesson-plan"
+            >
+                Xây dựng giáo án
+            </button>
 
 
-            <!-- 2 LỰA CHỌN -->
+            <button
+                type="button"
+                class="tab-button"
+                data-tab="worksheet"
+            >
+                Xây dựng phiếu bài tập
+            </button>
 
-            <div class="task-options">
-
-                <label class="task-option selected">
-
-                    <input
-                        type="radio"
-                        name="promptType"
-                        value="first"
-                        checked
-                    >
-
-                    <div class="task-content">
-
-                        <strong>
-                            Lần 1 – Phân tích tổng thể
-                        </strong>
-
-                        <span>
-                            AI phân tích bài học, đề xuất 2–3 kịch bản
-                            tổng thể, so sánh và chọn phương án phù hợp nhất.
-                            Chưa đi sâu vào từng pha.
-                        </span>
-
-                    </div>
-
-                </label>
-
-
-                <label class="task-option">
-
-                    <input
-                        type="radio"
-                        name="promptType"
-                        value="next"
-                    >
-
-                    <div class="task-content">
-
-                        <strong>
-                            Lần tiếp theo – Phân tích sâu một pha
-                        </strong>
-
-                        <span>
-                            Tiếp tục cuộc trò chuyện với AI và yêu cầu AI
-                            phân tích sâu pha tiếp theo dựa trên ngữ cảnh
-                            đã thống nhất ở các lượt trước.
-                        </span>
-
-                    </div>
-
-                </label>
-
-            </div>
-
-        </section>
+        </nav>
 
 
 
         <!-- ==================================================
-             SECTION 2
+             TAB 1
+             THÔNG TIN CHUNG
         =================================================== -->
 
-        <section class="card collapsible">
+        <section
+            id="tab-general"
+            class="tab-panel active"
+        >
 
-            <details open>
+            <section class="card">
 
-                <summary>
+                <div class="section-title">
 
-                    <span class="summary-number">
-                        2
-                    </span>
-
-                    <span class="summary-title">
-                        Thông tin bài học
-                    </span>
-
-                    <span class="summary-hint">
-                        Môn, lớp, bài học, thời lượng...
-                    </span>
-
-                </summary>
-
-
-                <div class="section-body">
-
-                    <div class="form-grid">
-
-                        <div class="form-group">
-
-                            <label for="subject">
-                                Môn học
-                            </label>
-
-                            <input
-                                type="text"
-                                id="subject"
-                                placeholder="Ví dụ: Sinh học"
-                            >
-
-                        </div>
-
-
-                        <div class="form-group">
-
-                            <label for="grade">
-                                Lớp
-                            </label>
-
-                            <input
-                                type="text"
-                                id="grade"
-                                placeholder="Ví dụ: 11"
-                            >
-
-                        </div>
-
-
-                        <div class="form-group full">
-
-                            <label for="lesson">
-                                Tên bài / chủ đề
-                            </label>
-
-                            <input
-                                type="text"
-                                id="lesson"
-                                placeholder="Ví dụ: Hệ tuần hoàn ở động vật"
-                            >
-
-                        </div>
-
-
-                        <div class="form-group">
-
-                            <label for="duration">
-                                Thời lượng
-                            </label>
-
-                            <input
-                                type="text"
-                                id="duration"
-                                placeholder="Ví dụ: 45 phút"
-                            >
-
-                        </div>
-
-
-                        <div class="form-group">
-
-                            <label for="lessonPosition">
-                                Vị trí bài học
-                            </label>
-
-                            <input
-                                type="text"
-                                id="lessonPosition"
-                                placeholder="Ví dụ: Bài 10"
-                            >
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </details>
-
-        </section>
-
-
-
-        <!-- ==================================================
-             SECTION 3 - MẪU GIÁO ÁN
-        =================================================== -->
-
-        <section class="card">
-
-            <div class="section-title">
-
-                <span class="section-number">
-                    3
-                </span>
-
-                <div>
-
-                    <h2>Mẫu giáo án</h2>
-
-                    <p>
-                        Mẫu trình bày được sử dụng khi AI phân tích sâu từng pha.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="template-box">
-
-                <div class="template-current">
-
-                    <span class="template-icon">
-                        ✓
+                    <span class="section-number">
+                        1
                     </span>
 
                     <div>
 
-                        <strong>
-                            Mẫu hiện tại
-                        </strong>
+                        <h2>
+                            Thông tin bài học
+                        </h2>
 
-                        <span id="templateFileName">
-                            mau_giao_an.txt
-                        </span>
+                        <p>
+                            Thông tin được dùng chung cho các chức năng
+                            thiết kế hoạt động dạy học.
+                        </p>
 
                     </div>
 
                 </div>
 
 
-                <p class="template-description">
-
-                    Mẫu mặc định được lấy từ file
-                    <strong>mau_giao_an.txt</strong>
-                    trong thư mục ứng dụng.
-
-                    Giáo viên có thể tải mẫu khác để thay thế.
-
-                </p>
+                <div class="form-grid">
 
 
-                <div class="template-actions">
-
-                    <label
-                        for="templateFile"
-                        class="btn btn-outline"
-                    >
-                        Tải mẫu mới
-                    </label>
-
-                    <input
-                        type="file"
-                        id="templateFile"
-                        accept=".txt,text/plain"
-                        hidden
-                    >
-
-
-                    <button
-                        type="button"
-                        id="btnPreviewTemplate"
-                        class="btn btn-secondary"
-                    >
-                        Xem mẫu
-                    </button>
-
-
-                    <button
-                        type="button"
-                        id="btnRestoreTemplate"
-                        class="btn btn-secondary"
-                    >
-                        Khôi phục mặc định
-                    </button>
-
-
-                    <button
-                        type="button"
-                        id="btnClearTemplate"
-                        class="btn btn-danger"
-                    >
-                        Xóa mẫu
-                    </button>
-
-                </div>
-
-
-                <div
-                    id="templateStatus"
-                    class="template-status"
-                >
-                    Đang sử dụng mẫu mặc định.
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- ==================================================
-             SECTION 4
-        =================================================== -->
-
-        <section class="card collapsible">
-
-            <details>
-
-                <summary>
-
-                    <span class="summary-number">
-                        4
-                    </span>
-
-                    <span class="summary-title">
-                        Yêu cầu cần đạt
-                    </span>
-
-                    <span class="summary-hint">
-                        Kiến thức, năng lực, phẩm chất
-                    </span>
-
-                </summary>
-
-
-                <div class="section-body">
+                    <!-- MÔN -->
 
                     <div class="form-group">
+
+                        <label for="subject">
+                            Môn học
+                        </label>
+
+                        <input
+                            type="text"
+                            id="subject"
+                            placeholder="Ví dụ: Sinh học"
+                        >
+
+                    </div>
+
+
+
+                    <!-- LỚP -->
+
+                    <div class="form-group">
+
+                        <label for="grade">
+                            Lớp
+                        </label>
+
+                        <input
+                            type="text"
+                            id="grade"
+                            placeholder="Ví dụ: 11"
+                        >
+
+                    </div>
+
+
+
+                    <!-- TÊN BÀI -->
+
+                    <div class="form-group full">
+
+                        <label for="lesson">
+                            Tên bài / chủ đề
+                        </label>
+
+                        <input
+                            type="text"
+                            id="lesson"
+                            placeholder="Ví dụ: Hệ tuần hoàn ở động vật"
+                        >
+
+                    </div>
+
+
+
+                    <!-- THỜI LƯỢNG -->
+
+                    <div class="form-group">
+
+                        <label for="duration">
+                            Thời lượng
+                        </label>
+
+                        <input
+                            type="text"
+                            id="duration"
+                            placeholder="Ví dụ: 45 phút"
+                        >
+
+                    </div>
+
+
+
+                    <!-- VỊ TRÍ -->
+
+                    <div class="form-group">
+
+                        <label for="lessonPosition">
+                            Vị trí bài học
+                        </label>
+
+                        <input
+                            type="text"
+                            id="lessonPosition"
+                            placeholder="Ví dụ: Bài 10"
+                        >
+
+                    </div>
+
+
+
+                    <!-- YÊU CẦU CẦN ĐẠT -->
+
+                    <div class="form-group full">
 
                         <label for="requirements">
                             Yêu cầu cần đạt
@@ -408,42 +229,11 @@
 
                     </div>
 
-                </div>
-
-            </details>
-
-        </section>
 
 
+                    <!-- ĐẶC ĐIỂM HS -->
 
-        <!-- ==================================================
-             SECTION 5
-        =================================================== -->
-
-        <section class="card collapsible">
-
-            <details>
-
-                <summary>
-
-                    <span class="summary-number">
-                        5
-                    </span>
-
-                    <span class="summary-title">
-                        Đặc điểm học sinh
-                    </span>
-
-                    <span class="summary-hint">
-                        Trình độ, khó khăn, đặc điểm lớp
-                    </span>
-
-                </summary>
-
-
-                <div class="section-body">
-
-                    <div class="form-group">
+                    <div class="form-group full">
 
                         <label for="students">
                             Đặc điểm học sinh
@@ -456,108 +246,45 @@
 
                     </div>
 
-                </div>
-
-            </details>
-
-        </section>
 
 
+                    <!-- ĐIỀU KIỆN LỚP -->
 
-        <!-- ==================================================
-             SECTION 6
-        =================================================== -->
+                    <div class="form-group full">
 
-        <section class="card collapsible">
+                        <label for="teachingConditions">
+                            Điều kiện lớp học
+                        </label>
 
-            <details>
-
-                <summary>
-
-                    <span class="summary-number">
-                        6
-                    </span>
-
-                    <span class="summary-title">
-                        Điều kiện dạy học
-                    </span>
-
-                    <span class="summary-hint">
-                        Phòng học, thiết bị, thời gian...
-                    </span>
-
-                </summary>
-
-
-                <div class="section-body">
-
-                    <div class="form-grid">
-
-                        <div class="form-group full">
-
-                            <label for="teachingConditions">
-                                Điều kiện lớp học
-                            </label>
-
-                            <textarea
-                                id="teachingConditions"
-                                placeholder="Ví dụ: Lớp 45 học sinh, bàn ghế cố định..."
-                            ></textarea>
-
-                        </div>
-
-
-                        <div class="form-group full">
-
-                            <label for="equipment">
-                                Thiết bị / phương tiện
-                            </label>
-
-                            <textarea
-                                id="equipment"
-                                placeholder="Ví dụ: Máy chiếu, máy tính, điện thoại..."
-                            ></textarea>
-
-                        </div>
+                        <textarea
+                            id="teachingConditions"
+                            placeholder="Ví dụ: Lớp 45 học sinh, bàn ghế cố định..."
+                        ></textarea>
 
                     </div>
 
-                </div>
-
-            </details>
-
-        </section>
 
 
+                    <!-- THIẾT BỊ -->
 
-        <!-- ==================================================
-             SECTION 7
-        =================================================== -->
+                    <div class="form-group full">
 
-        <section class="card collapsible">
+                        <label for="equipment">
+                            Thiết bị / phương tiện
+                        </label>
 
-            <details>
+                        <textarea
+                            id="equipment"
+                            placeholder="Ví dụ: Máy chiếu, máy tính, điện thoại..."
+                        ></textarea>
 
-                <summary>
-
-                    <span class="summary-number">
-                        7
-                    </span>
-
-                    <span class="summary-title">
-                        Định hướng phương pháp
-                    </span>
-
-                    <span class="summary-hint">
-                        Cách tổ chức dạy học mong muốn
-                    </span>
-
-                </summary>
+                    </div>
 
 
-                <div class="section-body">
 
-                    <div class="form-group">
+                    <!-- ĐỊNH HƯỚNG -->
+
+                    <div class="form-group full">
 
                         <label for="methodOrientation">
                             Định hướng dạy học
@@ -570,90 +297,28 @@
 
                     </div>
 
-                </div>
-
-            </details>
-
-        </section>
 
 
+                    <!-- MỨC ĐỘ HOẠT ĐỘNG -->
 
-        <!-- ==================================================
-             SECTION 8
-        =================================================== -->
-
-        <section class="card collapsible">
-
-            <details>
-
-                <summary>
-
-                    <span class="summary-number">
-                        8
-                    </span>
-
-                    <span class="summary-title">
-                        Mức độ hoạt động của học sinh
-                    </span>
-
-                    <span class="summary-hint">
-                        Mức độ mong muốn học sinh trực tiếp làm việc
-                    </span>
-
-                </summary>
-
-
-                <div class="section-body">
-
-                    <div class="form-group">
+                    <div class="form-group full">
 
                         <label for="studentActivity">
-                            Yêu cầu về mức độ hoạt động
+                            Mức độ hoạt động của học sinh
                         </label>
 
                         <textarea
                             id="studentActivity"
-                            placeholder="Ví dụ: Muốn học sinh suy nghĩ cá nhân trước, sau đó trao đổi cặp đôi..."
+                            placeholder="Ví dụ: Học sinh suy nghĩ cá nhân trước, sau đó trao đổi cặp đôi..."
                         ></textarea>
 
                     </div>
 
-                </div>
-
-            </details>
-
-        </section>
 
 
+                    <!-- ĐIỀU MUỐN TRÁNH -->
 
-        <!-- ==================================================
-             SECTION 9
-        =================================================== -->
-
-        <section class="card collapsible">
-
-            <details>
-
-                <summary>
-
-                    <span class="summary-number">
-                        9
-                    </span>
-
-                    <span class="summary-title">
-                        Những điều muốn tránh
-                    </span>
-
-                    <span class="summary-hint">
-                        Các cách tổ chức không mong muốn
-                    </span>
-
-                </summary>
-
-
-                <div class="section-body">
-
-                    <div class="form-group">
+                    <div class="form-group full">
 
                         <label for="avoid">
                             Những điều muốn tránh
@@ -668,140 +333,722 @@
 
                 </div>
 
-            </details>
+            </section>
+
+
+            <!-- GHI CHÚ -->
+
+            <div class="source-note">
+
+                <strong>
+                    Thông tin dùng chung
+                </strong>
+
+                <p>
+                    Thông tin trên được sử dụng làm dữ liệu đầu vào
+                    khi xây dựng kế hoạch bài giảng và phiếu bài tập.
+                </p>
+
+                <p>
+                    Giáo viên chỉ cần nhập một lần và có thể chuyển
+                    qua lại giữa các chức năng mà không cần nhập lại.
+                </p>
+
+            </div>
+
+
+            <!-- ACTION -->
+
+            <div class="main-actions">
+
+                <button
+                    type="button"
+                    id="btnSave"
+                    class="btn btn-secondary"
+                >
+                    Lưu thông tin
+                </button>
+
+
+                <button
+                    type="button"
+                    id="btnClear"
+                    class="btn btn-danger"
+                >
+                    Xóa thông tin
+                </button>
+
+            </div>
 
         </section>
 
 
 
         <!-- ==================================================
-             TÀI LIỆU NGUỒN
+             TAB 2
+             XÂY DỰNG GIÁO ÁN
         =================================================== -->
+
+        <section
+            id="tab-lesson-plan"
+            class="tab-panel"
+        >
+
+
+            <!-- LỰA CHỌN LƯỢT LÀM VIỆC -->
+
+            <section class="card">
+
+                <div class="section-title">
+
+                    <span class="section-number">
+                        1
+                    </span>
+
+                    <div>
+
+                        <h2>
+                            Lựa chọn nhiệm vụ
+                        </h2>
+
+                        <p>
+                            Chọn nhiệm vụ tương ứng với lượt làm việc
+                            trong cuộc trò chuyện với AI.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="core-goal">
+
+                    <div class="core-label">
+                        MỤC TIÊU CỐT LÕI
+                    </div>
+
+                    <div class="core-text">
+                        HỌC SINH HOẠT ĐỘNG NHIỀU –
+                        HOẠT ĐỘNG THỰC CHẤT –
+                        KHÔNG HOẠT ĐỘNG NHÓM HÌNH THỨC
+                    </div>
+
+                </div>
+
+
+                <div class="task-options">
+
+
+                    <label class="task-option selected">
+
+                        <input
+                            type="radio"
+                            name="promptType"
+                            value="first"
+                            checked
+                        >
+
+                        <div class="task-content">
+
+                            <strong>
+                                Lần 1 – Phân tích tổng thể
+                            </strong>
+
+                            <span>
+                                AI phân tích bài học, đề xuất 2–3 kịch bản
+                                tổng thể, so sánh và chọn phương án phù hợp nhất.
+                                Chưa đi sâu vào từng pha.
+                            </span>
+
+                        </div>
+
+                    </label>
+
+
+
+                    <label class="task-option">
+
+                        <input
+                            type="radio"
+                            name="promptType"
+                            value="next"
+                        >
+
+                        <div class="task-content">
+
+                            <strong>
+                                Lần tiếp theo – Phân tích sâu một pha
+                            </strong>
+
+                            <span>
+                                Tiếp tục cuộc trò chuyện với AI và yêu cầu AI
+                                phân tích sâu pha tiếp theo dựa trên ngữ cảnh
+                                đã thống nhất ở các lượt trước.
+                            </span>
+
+                        </div>
+
+                    </label>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- MẪU GIÁO ÁN -->
+
+            <section class="card">
+
+                <div class="section-title">
+
+                    <span class="section-number">
+                        2
+                    </span>
+
+                    <div>
+
+                        <h2>
+                            Mẫu giáo án
+                        </h2>
+
+                        <p>
+                            Mẫu trình bày được sử dụng khi AI phân tích sâu từng pha.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="template-box">
+
+                    <div class="template-current">
+
+                        <span class="template-icon">
+                            ✓
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Mẫu hiện tại
+                            </strong>
+
+                            <span id="templateFileName">
+                                mau_giao_an.txt
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <p class="template-description">
+
+                        Mẫu mặc định được lấy từ file
+                        <strong>mau_giao_an.txt</strong>
+                        trong thư mục ứng dụng.
+
+                        Giáo viên có thể tải mẫu khác để thay thế.
+
+                    </p>
+
+
+                    <div class="template-actions">
+
+                        <label
+                            for="templateFile"
+                            class="btn btn-outline"
+                        >
+                            Tải mẫu mới
+                        </label>
+
+                        <input
+                            type="file"
+                            id="templateFile"
+                            accept=".txt,text/plain"
+                            hidden
+                        >
+
+
+                        <button
+                            type="button"
+                            id="btnPreviewTemplate"
+                            class="btn btn-secondary"
+                        >
+                            Xem mẫu
+                        </button>
+
+
+                        <button
+                            type="button"
+                            id="btnRestoreTemplate"
+                            class="btn btn-secondary"
+                        >
+                            Khôi phục mặc định
+                        </button>
+
+
+                        <button
+                            type="button"
+                            id="btnClearTemplate"
+                            class="btn btn-danger"
+                        >
+                            Xóa mẫu
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        id="templateStatus"
+                        class="template-status"
+                    >
+                        Đang sử dụng mẫu mặc định.
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- SOURCE NOTE -->
+
+            <div class="source-note">
+
+                <strong>
+                    Tài liệu nguồn
+                </strong>
+
+                <p>
+                    Ứng dụng hiện chỉ tạo Prompt, chưa gửi tài liệu
+                    trực tiếp cho AI qua API.
+                </p>
+
+                <p>
+                    Khi sử dụng Prompt, giáo viên tải tài liệu bài học
+                    lên cùng cuộc trò chuyện với AI.
+                </p>
+
+                <p>
+                    Prompt yêu cầu AI sử dụng tài liệu được tải lên
+                    làm nguồn chính để phân tích.
+                </p>
+
+            </div>
+
+
+
+            <!-- ACTION -->
+
+            <div class="main-actions">
+
+                <button
+                    type="button"
+                    id="btnGenerateLessonPlan"
+                    class="btn btn-primary btn-large"
+                >
+                    Tạo Prompt kế hoạch bài giảng
+                </button>
+
+            </div>
+
+
+
+            <!-- PROMPT -->
+
+            <section class="card prompt-card">
+
+                <div class="section-title">
+
+                    <span class="section-number">
+                        P
+                    </span>
+
+                    <div>
+
+                        <h2>
+                            Prompt được tạo
+                        </h2>
+
+                        <p>
+                            Kiểm tra Prompt trước khi sao chép sang AI.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="prompt-actions">
+
+                    <button
+                        type="button"
+                        id="btnCopyLessonPrompt"
+                        class="btn btn-success"
+                    >
+                        Sao chép Prompt
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="btnDownloadLessonPrompt"
+                        class="btn btn-secondary"
+                    >
+                        Tải Prompt .txt
+                    </button>
+
+                </div>
+
+
+                <textarea
+                    id="lessonPromptOutput"
+                    readonly
+                    placeholder="Prompt kế hoạch bài giảng sẽ xuất hiện ở đây..."
+                ></textarea>
+
+            </section>
+
+        </section>
+
+
+<!-- ==================================================
+     TAB 3
+     XÂY DỰNG PHIẾU BÀI TẬP
+=================================================== -->
+
+<section
+    id="tab-worksheet"
+    class="tab-panel"
+>
+
+
+    <!-- GIỚI THIỆU -->
+
+    <section class="card">
+
+        <div class="section-title">
+
+            <span class="section-number">
+                1
+            </span>
+
+            <div>
+
+                <h2>
+                    Xây dựng phiếu bài tập
+                </h2>
+
+                <p>
+                    Tạo Prompt để AI chuyển kế hoạch bài giảng
+                    thành phiếu bài tập cho học sinh.
+                </p>
+
+            </div>
+
+        </div>
+
 
         <div class="source-note">
 
             <strong>
-                Lưu ý về tài liệu nguồn
+                Cách thức hoạt động
             </strong>
 
             <p>
-                Ứng dụng hiện chỉ tạo Prompt, chưa gửi tài liệu trực tiếp
-                cho AI qua API.
+                Ứng dụng hiện chỉ tạo Prompt, không trực tiếp
+                đọc hoặc xử lý kế hoạch bài giảng.
             </p>
 
             <p>
-                Khi sử dụng Prompt, giáo viên tải tài liệu bài học
-                lên cùng cuộc trò chuyện với AI.
+                Sau khi tạo Prompt, giáo viên sao chép Prompt
+                sang cuộc trò chuyện với AI và cung cấp kế hoạch
+                bài giảng cho AI tại đó.
             </p>
 
             <p>
-                Prompt yêu cầu AI sử dụng tài liệu được tải lên
-                làm nguồn chính để phân tích.
+                AI sẽ dựa vào kế hoạch bài giảng, thông tin chung
+                và các nguyên tắc trong Prompt mẫu để xây dựng
+                phiếu bài tập phù hợp.
             </p>
 
         </div>
 
+    </section>
 
 
-        <!-- ==================================================
-             ACTION BUTTONS
-        =================================================== -->
 
-        <div class="main-actions">
+    <!-- PROMPT MẪU PHIẾU BÀI TẬP -->
 
-            <button
-                type="button"
-                id="btnGenerate"
-                class="btn btn-primary btn-large"
-            >
-                Tạo Prompt
-            </button>
+    <section class="card">
 
+        <div class="section-title">
 
-            <button
-                type="button"
-                id="btnSave"
-                class="btn btn-secondary"
-            >
-                Lưu thông tin
-            </button>
+            <span class="section-number">
+                2
+            </span>
 
+            <div>
 
-            <button
-                type="button"
-                id="btnClear"
-                class="btn btn-danger"
-            >
-                Xóa thông tin
-            </button>
+                <h2>
+                    Prompt mẫu phiếu bài tập
+                </h2>
+
+                <p>
+                    Prompt mẫu được dùng làm cơ sở để tạo Prompt
+                    cho phiếu bài tập.
+                </p>
+
+            </div>
 
         </div>
 
 
+        <div class="template-box">
 
-        <!-- ==================================================
-             PROMPT OUTPUT
-        =================================================== -->
+            <div class="template-current">
 
-        <section class="card prompt-card">
-
-            <div class="section-title">
-
-                <span class="section-number">
-                    P
+                <span class="template-icon">
+                    ✓
                 </span>
 
                 <div>
 
-                    <h2>
-                        Prompt được tạo
-                    </h2>
+                    <strong>
+                        Prompt hiện tại
+                    </strong>
 
-                    <p>
-                        Kiểm tra Prompt trước khi sao chép sang AI.
-                    </p>
+                    <span id="worksheetPromptFileName">
+                        third_prompt.txt
+                    </span>
 
                 </div>
 
             </div>
 
 
-            <div class="prompt-actions">
+            <p class="template-description">
+
+                Mặc định sử dụng file
+                <strong>third_prompt.txt</strong>
+                trong thư mục ứng dụng.
+
+                Giáo viên có thể tải một Prompt mẫu khác
+                để thay thế.
+
+            </p>
+
+
+            <div class="template-actions">
+
+                <label
+                    for="worksheetPromptFile"
+                    class="btn btn-outline"
+                >
+                    Tải Prompt mới
+                </label>
+
+                <input
+                    type="file"
+                    id="worksheetPromptFile"
+                    accept=".txt,text/plain"
+                    hidden
+                >
+
 
                 <button
                     type="button"
-                    id="btnCopyPrompt"
-                    class="btn btn-success"
+                    id="btnPreviewWorksheetPrompt"
+                    class="btn btn-secondary"
                 >
-                    Sao chép Prompt
+                    Xem Prompt
                 </button>
 
 
                 <button
                     type="button"
-                    id="btnDownloadPrompt"
+                    id="btnRestoreWorksheetPrompt"
                     class="btn btn-secondary"
                 >
-                    Tải Prompt .txt
+                    Khôi phục mặc định
+                </button>
+
+
+                <button
+                    type="button"
+                    id="btnClearWorksheetPrompt"
+                    class="btn btn-danger"
+                >
+                    Xóa Prompt
                 </button>
 
             </div>
 
 
-            <textarea
-                id="promptOutput"
-                readonly
-                placeholder="Prompt sẽ xuất hiện ở đây..."
-            ></textarea>
+            <div
+                id="worksheetPromptStatus"
+                class="template-status"
+            >
+                Đang sử dụng Prompt mặc định.
+            </div>
 
-        </section>
+        </div>
 
-    </main>
+    </section>
 
 
+
+    <!-- MẪU GIÁO ÁN ĐƯỢC KẾ THỪA -->
+
+    <section class="card">
+
+        <div class="section-title">
+
+            <span class="section-number">
+                3
+            </span>
+
+            <div>
+
+                <h2>
+                    Mẫu giáo án được kế thừa
+                </h2>
+
+                <p>
+                    Sử dụng cùng mẫu giáo án đang được thiết lập
+                    trong chức năng xây dựng giáo án.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="template-box">
+
+            <div class="template-current">
+
+                <span class="template-icon">
+                    ✓
+                </span>
+
+                <div>
+
+                    <strong>
+                        Mẫu giáo án hiện tại
+                    </strong>
+
+                    <span id="worksheetTemplateFileName">
+                        mau_giao_an.txt
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <p class="template-description">
+
+                Phiếu bài tập tự động kế thừa mẫu giáo án đang
+                được sử dụng ở thẻ
+                <strong>Xây dựng giáo án</strong>.
+
+                Không cần tải lại mẫu riêng cho chức năng này.
+
+            </p>
+
+
+            <div
+                id="worksheetTemplateStatus"
+                class="template-status"
+            >
+                Mẫu giáo án được kế thừa tự động.
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ACTION -->
+
+    <div class="main-actions">
+
+        <button
+            type="button"
+            id="btnGenerateWorksheet"
+            class="btn btn-primary btn-large"
+        >
+            Tạo Prompt phiếu bài tập
+        </button>
+
+    </div>
+
+
+
+    <!-- PROMPT OUTPUT -->
+
+    <section class="card prompt-card">
+
+        <div class="section-title">
+
+            <span class="section-number">
+                P
+            </span>
+
+            <div>
+
+                <h2>
+                    Prompt được tạo
+                </h2>
+
+                <p>
+                    Kiểm tra Prompt trước khi sao chép sang AI.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="prompt-actions">
+
+            <button
+                type="button"
+                id="btnCopyWorksheetPrompt"
+                class="btn btn-success"
+            >
+                Sao chép Prompt
+            </button>
+
+
+            <button
+                type="button"
+                id="btnDownloadWorksheetPrompt"
+                class="btn btn-secondary"
+            >
+                Tải Prompt .txt
+            </button>
+
+        </div>
+
+
+        <textarea
+            id="worksheetPromptOutput"
+            readonly
+            placeholder="Prompt phiếu bài tập sẽ xuất hiện ở đây..."
+        ></textarea>
+
+    </section>
+
+</section>
 
     <!-- ==================================================
-         MODAL XEM MẪU
+         MODAL MẪU GIÁO ÁN
     =================================================== -->
 
     <div
@@ -811,11 +1058,13 @@
 
         <div class="modal-content">
 
+
             <div class="modal-header">
 
                 <h3>
                     Nội dung mẫu giáo án
                 </h3>
+
 
                 <button
                     type="button"
@@ -858,4 +1107,5 @@ Chưa có nội dung mẫu.
 </div>
 
 </body>
+
 </html>
