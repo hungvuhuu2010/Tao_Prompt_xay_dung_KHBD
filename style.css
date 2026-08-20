@@ -21,7 +21,7 @@
     --yellow-light: #fffbeb;
     --red-light: #fef2f2;
 
-    --radius: 8px;
+    --radius: 20px;
 }
 
 
@@ -93,7 +93,7 @@ button {
 .header p {
     margin: 0;
 
-    font-size: 13px;
+    font-size: 14px;
 
     opacity: .92;
 }
@@ -109,6 +109,75 @@ button {
     margin: auto;
 
     padding: 18px 14px 45px;
+}
+
+
+/* =========================================================
+   TABS
+========================================================= */
+
+.tabs {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 5px;
+
+    margin-bottom: 12px;
+
+    padding: 5px;
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    background: #e5e7eb;
+}
+
+.tab-button {
+    padding: 11px 12px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: transparent;
+
+    color: #4b5563;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    transition: .15s;
+}
+
+.tab-button:hover {
+    background: #f9fafb;
+
+    color: var(--primary);
+}
+
+.tab-button.active {
+    background: #ffffff;
+
+    color: var(--primary);
+
+    box-shadow:
+        0 1px 3px rgba(0, 0, 0, .08);
+}
+
+
+/* =========================================================
+   TAB PANEL
+========================================================= */
+
+.tab-panel {
+    display: none;
+}
+
+.tab-panel.active {
+    display: block;
 }
 
 
@@ -144,8 +213,8 @@ button {
 }
 
 .section-number {
-    width: 29px;
-    height: 29px;
+    width: 30px;
+    height: 30px;
 
     display: flex;
 
@@ -160,7 +229,7 @@ button {
 
     color: #ffffff;
 
-    font-size: 12px;
+    font-size: 20px;
 
     font-weight: bold;
 }
@@ -271,6 +340,8 @@ button {
     flex-direction: column;
 
     gap: 2px;
+
+    flex: 1;
 }
 
 .task-content strong {
@@ -563,6 +634,138 @@ textarea {
 
 
 /* =========================================================
+   EXTRACTION RULES
+========================================================= */
+
+.extraction-rules {
+    padding: 12px 14px;
+
+    border: 1px solid #bfdbfe;
+
+    border-radius: 7px;
+
+    background: var(--blue-light);
+}
+
+.rule-item {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 9px;
+
+    padding: 7px 0;
+
+    color: #374151;
+
+    font-size: 11px;
+}
+
+.rule-item + .rule-item {
+    border-top: 1px solid rgba(191, 219, 254, .7);
+}
+
+.rule-icon {
+    width: 20px;
+    height: 20px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #dcfce7;
+
+    color: #15803d;
+
+    font-size: 10px;
+
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   WORKFLOW
+========================================================= */
+
+.workflow {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.workflow-step {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 9px 11px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 6px;
+
+    background: #ffffff;
+}
+
+.workflow-step span {
+    width: 24px;
+    height: 24px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #e5e7eb;
+
+    color: #374151;
+
+    font-size: 10px;
+
+    font-weight: bold;
+}
+
+.workflow-step strong {
+    font-size: 11px;
+}
+
+.workflow-step.final {
+    border-color: var(--primary);
+
+    background: var(--blue-light);
+}
+
+.workflow-step.final span {
+    background: var(--primary);
+
+    color: #ffffff;
+}
+
+.workflow-arrow {
+    text-align: center;
+
+    color: var(--muted);
+
+    font-size: 14px;
+
+    line-height: 1;
+}
+
+
+/* =========================================================
    BUTTON
 ========================================================= */
 
@@ -668,7 +871,8 @@ textarea {
     margin-bottom: 8px;
 }
 
-#promptOutput {
+#lessonPromptOutput,
+#worksheetPromptOutput {
     min-height: 480px;
 
     background: #111827;
@@ -848,6 +1052,14 @@ textarea {
 
     .card {
         padding: 13px;
+    }
+
+    .tabs {
+        grid-template-columns: 1fr;
+    }
+
+    .tab-button {
+        padding: 10px;
     }
 
     .form-grid {
