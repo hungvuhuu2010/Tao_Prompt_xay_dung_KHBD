@@ -137,3 +137,79 @@
                     </div>
                 </div>
             </section>
+
+            <section class="card">
+                <div class="section-title">
+                    <span class="section-number">2</span>
+                    <div>
+                        <h2>Prompt mẫu</h2>
+                        <p>Quản lý 3 Prompt quy trình thiết kế theo các bước làm việc với AI.</p>
+                    </div>
+                </div>
+
+                <div class="prompt-item-card">
+                    <div class="prompt-item-header">
+                        <strong>Prompt 1: Xây dựng ý tưởng bài học (first_prompt.txt)</strong>
+                    </div>
+                    <div class="prompt-item-actions">
+                        <input type="file" id="filePrompt1" accept=".txt" style="display:none;">
+                        <button type="button" id="btnUploadPrompt1" class="btn btn-secondary">Tải prompt mới</button>
+                        <button type="button" id="btnViewPrompt1" class="btn btn-secondary">Xem prompt</button>
+                        <button type="button" id="btnResetPrompt1" class="btn btn-secondary">Khôi phục mặc định</button>
+                    </div>
+                </div>
+
+                <div class="prompt-item-card mb-3">
+                    <div class="prompt-item-header">
+                        <strong>Prompt 2: Thiết kế chi tiết pha hoạt động (second_prompt.txt)</strong>
+                    </div>
+                    <div class="prompt-item-actions">
+                        <input type="file" id="filePrompt2" accept=".txt" style="display:none;">
+                        <button type="button" id="btnUploadPrompt2" class="btn btn-secondary">Tải prompt mới</button>
+                        <button type="button" id="btnViewPrompt2" class="btn btn-secondary">Xem prompt</button>
+                        <button type="button" id="btnResetPrompt2" class="btn btn-secondary">Khôi phục mặc định</button>
+                    </div>
+                </div>
+
+                <div class="prompt-item-card mb-3">
+                    <div class="prompt-item-header">
+                        <strong>Prompt 3: Thiết kế phiếu hoạt động (third_prompt.txt)</strong>
+                    </div>
+                    <div class="prompt-item-actions">
+                        <input type="file" id="filePrompt3" accept=".txt" style="display:none;">
+                        <button type="button" id="btnUploadPrompt3" class="btn btn-secondary">Tải prompt mới</button>
+                        <button type="button" id="btnViewPrompt3" class="btn btn-secondary">Xem prompt</button>
+                        <button type="button" id="btnResetPrompt3" class="btn btn-secondary">Khôi phục mặc định</button>
+                    </div>
+                </div>
+
+                <div class="generate-zone">
+                    <button type="button" id="btnGenerateZip" class="btn btn-primary btn-large">
+                        📦 Tạo prompt phiếu bài tập (Tải gói .zip 3 Prompt)
+                    </button>
+                </div>
+            </section>
+
+        </section>
+
+    </main>
+
+    <div id="templateModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Xem nội dung</h3>
+                <button type="button" id="btnCloseModal" class="modal-close">×</button>
+            </div>
+            <div class="modal-body">
+                <pre id="templatePreview">Chưa có nội dung.</pre>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
