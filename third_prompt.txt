@@ -1,4 +1,4 @@
-PROMPT MẪU XÂY DỰNG PHIẾU HOẠT ĐỘNG (BÀI TẬP HỌC SINH)
+PROMPT MẪU XÂY DỰNG PHIẾU HOẠT ĐỘNG {Tên bài / chủ đề}
 
 VAI TRÒ
 
