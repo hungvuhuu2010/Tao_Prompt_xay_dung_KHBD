@@ -33,10 +33,8 @@
         <section id="tab-general" class="tab-panel active">
             <section class="card">
                 <div class="section-title">
-                    <span class="section-number">1</span>
                     <div>
-                        <h2>Thông tin bài học</h2>
-                        <p>Thông tin dùng chung cho quá trình tạo các Prompt AI.</p>
+                        <h2>Thông tin dùng chung cho quá trình tạo các Prompt AI</h2>
                     </div>
                 </div>
 
@@ -153,9 +151,9 @@
                     </div>
                     <div class="prompt-item-actions">
                         <input type="file" id="filePrompt1" accept=".txt" style="display:none;">
-                        <button type="button" id="btnUploadPrompt1" class="btn btn-secondary">Tải prompt mới</button>
+                        <button type="button" id="btnUploadPrompt1" class="btn btn-primary">Tải prompt mới</button>
                         <button type="button" id="btnViewPrompt1" class="btn btn-secondary">Xem prompt</button>
-                        <button type="button" id="btnResetPrompt1" class="btn btn-secondary">Khôi phục mặc định</button>
+                        <button type="button" id="btnResetPrompt1" class="btn btn-danger">Khôi phục mặc định</button>
                     </div>
                 </div>
 
@@ -165,9 +163,9 @@
                     </div>
                     <div class="prompt-item-actions">
                         <input type="file" id="filePrompt2" accept=".txt" style="display:none;">
-                        <button type="button" id="btnUploadPrompt2" class="btn btn-secondary">Tải prompt mới</button>
+                        <button type="button" id="btnUploadPrompt2" class="btn btn-primary">Tải prompt mới</button>
                         <button type="button" id="btnViewPrompt2" class="btn btn-secondary">Xem prompt</button>
-                        <button type="button" id="btnResetPrompt2" class="btn btn-secondary">Khôi phục mặc định</button>
+                        <button type="button" id="btnResetPrompt2" class="btn btn-danger">Khôi phục mặc định</button>
                     </div>
                 </div>
 
@@ -177,18 +175,20 @@
                     </div>
                     <div class="prompt-item-actions">
                         <input type="file" id="filePrompt3" accept=".txt" style="display:none;">
-                        <button type="button" id="btnUploadPrompt3" class="btn btn-secondary">Tải prompt mới</button>
+                        <button type="button" id="btnUploadPrompt3" class="btn btn-primary">Tải prompt mới</button>
                         <button type="button" id="btnViewPrompt3" class="btn btn-secondary">Xem prompt</button>
-                        <button type="button" id="btnResetPrompt3" class="btn btn-secondary">Khôi phục mặc định</button>
+                        <button type="button" id="btnResetPrompt3" class="btn btn-danger">Khôi phục mặc định</button>
                     </div>
                 </div>
+	</section>
 
-                <div class="generate-zone">
-                    <button type="button" id="btnGenerateZip" class="btn btn-primary btn-large">
-                        📦 Tạo prompt phiếu bài tập (Tải gói .zip 3 Prompt)
-                    </button>
-                </div>
-            </section>
+
+	<!-- KHU VỰC THỰC THI (ĐẶT BÊN DƯỚI VÀ TÁCH BIỆT KHỎI SECTION 1 VÀ 2) -->
+	    <div class="main-actions" style="margin-top: 20px; text-align: center;">
+	        <button type="button" id="btnGenerateZip" class="btn btn-primary btn-large" style="width: 100%; padding: 15px; font-size: 1.1rem;">
+            📦 Tải gói .zip 3 Prompt
+	        </button>
+	    </div>
 
         </section>
 
