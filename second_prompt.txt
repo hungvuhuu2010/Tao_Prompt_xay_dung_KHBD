@@ -1,101 +1,101 @@
-TIẾP TỤC THIẾT KẾ HOẠT ĐỘNG DẠY HỌC
+TIẾP TỤC THIẾT KẾ HOẠT ĐỘNG DẠY HỌC (LƯỢT PHÂN TÍCH PHA CHI TIẾT)
 
 Hãy tiếp tục từ toàn bộ ngữ cảnh của cuộc trò chuyện này.
 
-Đây là lượt tiếp theo sau lần phân tích tổng thể hoặc sau một pha đã được phân tích.
+Đây là lượt tiếp theo sau lần phân tích tổng thể (Lần 1) hoặc sau một pha đã được hoàn thành ở lượt trước.
 
-NHIỆM VỤ:
+============================================================
+THÔNG TIN BÀI HỌC VÀ ĐIỀU KIỆN RÀNG BUỘC
+============================================================
+Hãy luôn bám sát các thông tin cấu hình dưới đây để điều chỉnh mức độ nhiệm vụ, thiết bị sử dụng và câu hỏi hỗ trợ trong pha:
+
+- Môn học: {Môn học}
+- Lớp: {Lớp}
+- Tên bài / chủ đề: {Tên bài / chủ đề}
+- Thời lượng: {Thời lượng}
+- Vị trí bài học: {Vị trí bài học}
+- Yêu cầu cần đạt: {Yêu cầu cần đạt}
+- Đặc điểm học sinh: {Đặc điểm học sinh}
+- Điều kiện lớp học: {Điều kiện lớp học}
+- Thiết bị / phương tiện: {Thiết bị / phương tiện}
+- Định hướng dạy học: {Định hướng dạy học}
+- Mức độ hoạt động của học sinh: {Mức độ hoạt động của học sinh}
+- Những điều muốn tránh: {Những điều muốn tránh}
+
+============================================================
+NHIỆM VỤ CỦA AI TRONG LƯỢT NÀY
+============================================================
 
 1. Đọc lại kết quả phân tích và thiết kế đã thực hiện trong các lượt trước.
-
 2. Xác định kịch bản đã được lựa chọn.
+3. Xác định các pha đã hoàn thành thiết kế chi tiết.
+4. Xác định DUY NHẤT PHA TIẾP THEO cần được thiết kế (hoặc pha do giáo viên chỉ định trong tin nhắn).
+5. Chỉ phân tích sâu DUY NHẤT PHA ĐÓ.
 
-3. Xác định các pha đã được phân tích.
+TUYỆT ĐỐI KHÔNG:
+- Không phân tích lại toàn bộ bài.
+- Không đề xuất lại các kịch bản tổng thể.
+- Không viết lại những pha đã hoàn thành.
+- Không phân tích nhiều pha cùng lúc.
+- Không tự động viết tiếp sang pha sau khi hoàn thành pha hiện tại.
 
-4. Xác định PHA TIẾP THEO cần được thiết kế.
+============================================================
+YÊU CẦU THIẾT KẾ CHI TIẾT PHA
+============================================================
 
-5. Chỉ phân tích sâu DUY NHẤT PHA TIẾP THEO.
+Hãy thiết kế pha này thành một hoạt động học tập thực chất, trong đó học sinh là chủ thể. Bám sát {Đặc điểm học sinh} để thiết kế câu hỏi dẫn dắt phù hợp cho cả học sinh trung bình và khá giỏi.
 
-Không phân tích lại toàn bộ bài.
+Phải làm rõ các nội dung sau:
+- Vị trí và vai trò của pha trong tiến trình bài học.
+- Mục tiêu cụ thể của pha (về kiến thức, năng lực, phẩm chất).
+- Ý tưởng hoạt động trung tâm.
+- Nhiệm vụ học tập cụ thể giao cho học sinh.
+- Học sinh thực sự làm gì (thao tác, hành động cụ thể).
+- Học sinh phải suy nghĩ gì (mâu thuẫn nhận thức, dự đoán, giải thích).
+- Sản phẩm học tập dự kiến (văn bản, bảng biểu, sơ đồ, câu trả lời...).
+- Hệ thống câu hỏi dẫn dắt của giáo viên.
+- Dự kiến các phương án phản hồi/câu trả lời của học sinh.
+- Các sai lầm, quan niệm sai lệch hoặc khó khăn học sinh dễ gặp phải.
+- Biện pháp xử lý sư phạm, gợi ý hỗ trợ của giáo viên.
+- Phương pháp và công cụ đánh giá việc học trong pha.
+- Kiến thức cốt lõi cần giáo viên chuẩn hóa/chốt lại cuối pha.
+- Thời gian dự kiến triển khai (phù hợp với {Thời lượng}).
 
-Không đề xuất lại các kịch bản.
-
-Không viết lại những pha đã hoàn thành.
-
-Không phân tích nhiều pha cùng lúc.
-
-Không tự động viết tiếp sang pha sau.
-
-==================================================
-
-ĐỐI VỚI PHA ĐANG ĐƯỢC PHÂN TÍCH:
-
-Hãy thiết kế pha này thành một hoạt động học tập thực chất, trong đó học sinh là chủ thể.
-
-Phải làm rõ:
-
-- Vị trí và vai trò của pha.
-- Mục tiêu của pha.
-- Ý tưởng hoạt động.
-- Nhiệm vụ học tập cụ thể.
-- Học sinh thực sự làm gì.
-- Học sinh phải suy nghĩ gì.
-- Sản phẩm học tập.
-- Câu hỏi dẫn dắt.
-- Dự kiến phản hồi của học sinh.
-- Sai lầm và khó khăn có thể xảy ra.
-- Cách giáo viên hỗ trợ và xử lý.
-- Cách đánh giá việc học.
-- Kiến thức cần chuẩn hóa.
-- Thời gian dự kiến.
-
-Ưu tiên để học sinh:
-
+ƯU TIÊN TIẾN TRÌNH NHẬN THỨC:
 SUY NGHĨ → LÀM → TẠO SẢN PHẨM → TRAO ĐỔI → GIẢI THÍCH → PHẢN HỒI → HÌNH THÀNH HIỂU BIẾT.
 
-Không biến hoạt động thành:
+Triệt để tuân thủ {Những điều muốn tránh}: Không biến hoạt động thành "CHIA NHÓM → THẢO LUẬN → ĐẠI DIỆN TRÌNH BÀY" mang tính hình thức nếu bản thân nhiệm vụ không buộc học sinh phải suy nghĩ cá nhân.
 
-CHIA NHÓM → THẢO LUẬN → ĐẠI DIỆN TRÌNH BÀY
+============================================================
+MẪU TRÌNH BÀY HOẠT ĐỘNG
+============================================================
 
-nếu bản thân nhiệm vụ không buộc học sinh phải suy nghĩ và làm việc.
+Trình bày nội dung pha chi tiết theo chuẩn mẫu giáo án dưới đây (nếu có):
 
-Nếu phát hiện hoạt động nhóm có tính hình thức, phải thiết kế lại nhiệm vụ.
-
-==================================================
-
-MẪU TRÌNH BÀY
-
-Nếu có nội dung trong phần "MẪU TRÌNH BÀY HOẠT ĐỘNG", hãy sử dụng mẫu đó để trình bày pha.
+{MẪU GIÁO ÁN THAM CHIẾU}
 
 Mẫu chỉ quy định CÁCH TRÌNH BÀY, không được làm thay đổi nguyên tắc thiết kế hoạt động học tập thực chất.
 
-==================================================
+============================================================
+KIỂM TRA TỔNG THỂ TRƯỚC KHI XUẤT ĐẦU RA
+============================================================
 
-KIỂM TRA TRƯỚC KHI TRẢ LỜI
+□ Nhiệm vụ có điểm bắt đầu rõ ràng cho {Đặc điểm học sinh}?
+□ Từng học sinh đều có việc phải làm, không bị đứng ngoài hoạt động?
+□ Tận dụng đúng {Thiết bị / phương tiện} và phù hợp với {Điều kiện lớp học}?
+□ Tạo ra sản phẩm học tập cụ thể có thể quan sát và đánh giá được?
+□ Giáo viên không nói quá nhiều, đóng vai trò hướng dẫn/chuẩn hóa?
+□ Không vi phạm bất kỳ yêu cầu nào trong {Những điều muốn tránh}?
 
-□ Học sinh có nhiệm vụ cụ thể?
+============================================================
+ĐẦU RA YÊU CẦU
+============================================================
 
-□ Từng học sinh có việc phải làm?
+Chỉ trả về nội dung chi tiết của DUY NHẤT PHA ĐANG ĐƯỢC PHÂN TÍCH.
+Sau khi hoàn thành pha này, DỪNG LẠI và đợi chỉ đạo tiếp theo của giáo viên.
+```[cite: 5]
 
-□ Học sinh có phải suy nghĩ?
-
-□ Có sản phẩm học tập?
-
-□ Có bằng chứng của việc học?
-
-□ Hoạt động phục vụ mục tiêu của pha?
-
-□ Học sinh trung bình có thể tham gia?
-
-□ Giáo viên có nói quá nhiều?
-
-□ Có nguy cơ hoạt động nhóm hình thức?
-
-Nếu phát hiện vấn đề, hãy chỉnh sửa hoạt động trước khi đưa ra kết quả.
-
-==================================================
-
-CHỈ TRẢ VỀ PHA ĐANG ĐƯỢC PHÂN TÍCH.
-
-Sau khi hoàn thành pha này, dừng lại.
-Không tự động chuyển sang pha tiếp theo.
+### Những cập nhật quan trọng trong `second_prompt.txt`:
+1. **Liên kết biến cấu hình:** Bổ sung khối `{Môn học}`, `{Lớp}`, `{Đặc điểm học sinh}`, `{Thiết bị / phương tiện}`, `{Những điều muốn tránh}`... giúp AI giữ đúng ngữ cảnh lớp học mà không bị chệch hướng khi đi sâu vào từng pha[cite: 5].
+2. **Kế thừa Mẫu giáo án:** Khai báo vị trí `{MẪU GIÁO ÁN THAM CHIẾU}` để khi nối dữ liệu từ ứng dụng, AI sẽ xuất ra cấu trúc pha khớp chính xác với khung Công văn 5512 (hoặc mẫu riêng của giáo viên)[cite: 3, 5].
+3. **Giữ vững Guardrail:** Khóa chặt phạm vi phản hồi, buộc AI chỉ xuất 1 pha duy nhất rồi dừng lại, không tự động tạo tràn lan[cite: 5].
