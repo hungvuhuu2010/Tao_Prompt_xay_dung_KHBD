@@ -29,6 +29,7 @@ Vì vậy:
 - Không được biến phiếu thành một đề kiểm tra.
 - Không được biến phiếu thành một bản tóm tắt lý thuyết.
 - Không được đưa lên phiếu những công việc chỉ dành cho giáo viên.
+- **Những phần lý thuyết cơ sở** học sinh phải ghi vở sẽ không đưa vào phiếu để tránh trùng lặp
 
 Mục tiêu quan trọng nhất:
 
