@@ -1,1533 +1,264 @@
-/* =========================================================
-   TRỢ LÝ THIẾT KẾ HOẠT ĐỘNG DẠY HỌC
-   script.js
-========================================================= */
-
 document.addEventListener("DOMContentLoaded", () => {
 
-    /* =====================================================
-       BIẾN TOÀN CỤC
-    ===================================================== */
-
+    // =====================================================
+    // BIẾN TOÀN CỤC & TỆP MẶC ĐỊNH
+    // =====================================================
     const DEFAULT_LESSON_TEMPLATE = "mau_giao_an.txt";
-    const FIRST_PROMPT_FILE = "first_prompt.txt";
-    const SECOND_PROMPT_FILE = "second_prompt.txt";
-    const THIRD_PROMPT_FILE = "third_prompt.txt";
+    const DEFAULT_PROMPT1 = "first_prompt.txt";
+    const DEFAULT_PROMPT2 = "second_prompt.txt";
+    const DEFAULT_PROMPT3 = "third_prompt.txt";
 
     let lessonTemplateContent = "";
-    let lessonTemplateName = DEFAULT_LESSON_TEMPLATE;
+    let prompt1Content = "";
+    let prompt2Content = "";
+    let prompt3Content = "";
 
-    let worksheetPromptContent = "";
-    let worksheetPromptName = THIRD_PROMPT_FILE;
-
-
-    /* =====================================================
-       TIỆN ÍCH
-    ===================================================== */
-
-    function getValue(id) {
-        const element = document.getElementById(id);
-        return element ? element.value.trim() : "";
-    }
-
-
-    function setValue(id, value) {
-        const element = document.getElementById(id);
-
-        if (element) {
-            element.value = value || "";
-        }
-    }
-
-
-    function showToast(message) {
-
-        const toast = document.getElementById("toast");
-
-        if (!toast) return;
-
-        toast.textContent = message;
-
-        toast.classList.add("show");
-
-        clearTimeout(showToast.timer);
-
-        showToast.timer = setTimeout(() => {
-            toast.classList.remove("show");
-        }, 2500);
-    }
-
-
-    function downloadText(filename, content) {
-
-        if (!content || !content.trim()) {
-            showToast("Không có nội dung để tải.");
-            return;
-        }
-
-        const blob = new Blob(
-            [content],
-            {
-                type: "text/plain;charset=utf-8"
-            }
-        );
-
-        const url = URL.createObjectURL(blob);
-
-        const link = document.createElement("a");
-
-        link.href = url;
-        link.download = filename;
-
-        document.body.appendChild(link);
-
-        link.click();
-
-        document.body.removeChild(link);
-
-        URL.revokeObjectURL(url);
-    }
-
-
-    async function copyText(text) {
-
-        if (!text || !text.trim()) {
-            showToast("Không có Prompt để sao chép.");
-            return;
-        }
-
-        try {
-
-            await navigator.clipboard.writeText(text);
-
-            showToast("Đã sao chép Prompt.");
-
-        } catch (error) {
-
-            const textarea = document.createElement("textarea");
-
-            textarea.value = text;
-
-            textarea.style.position = "fixed";
-            textarea.style.left = "-9999px";
-
-            document.body.appendChild(textarea);
-
-            textarea.select();
-
-            try {
-                document.execCommand("copy");
-                showToast("Đã sao chép Prompt.");
-            } catch (e) {
-                showToast("Không thể sao chép tự động.");
-            }
-
-            document.body.removeChild(textarea);
-        }
-    }
-
-
-    async function loadTextFile(filename) {
-
-        try {
-
-            const response = await fetch(filename, {
-                cache: "no-store"
-            });
-
-            if (!response.ok) {
-                throw new Error(
-                    `Không tìm thấy file: ${filename}`
-                );
-            }
-
-            return await response.text();
-
-        } catch (error) {
-
-            console.error(error);
-
-            return "";
-        }
-    }
-
-
-    async function readUploadedText(file) {
-
-        if (!file) return "";
-
-        try {
-            return await file.text();
-        } catch (error) {
-
-            console.error(error);
-
-            return "";
-        }
-    }
-
-
-    /* =====================================================
-       THÔNG TIN CHUNG
-    ===================================================== */
-
-    const GENERAL_FIELDS = [
-        "subject",
-        "grade",
-        "lesson",
-        "duration",
-        "lessonPosition",
-        "requirements",
-        "students",
-        "teachingConditions",
-        "equipment",
-        "methodOrientation",
-        "studentActivity",
-        "avoid"
+    const FIELD_MAP = [
+        { id: "subject", label: "Môn học" },
+        { id: "grade", label: "Lớp" },
+        { id: "lesson", label: "Tên bài / chủ đề" },
+        { id: "duration", label: "Thời lượng" },
+        { id: "lessonPosition", label: "Vị trí bài học" },
+        { id: "requirements", label: "Yêu cầu cần đạt" },
+        { id: "students", label: "Đặc điểm học sinh" },
+        { id: "teachingConditions", label: "Điều kiện lớp học" },
+        { id: "equipment", label: "Thiết bị / phương tiện" },
+        { id: "methodOrientation", label: "Định hướng dạy học" },
+        { id: "studentActivity", label: "Mức độ hoạt động của học sinh" },
+        { id: "avoid", label: "Những điều muốn tránh" }
     ];
 
-
-    function collectGeneralInfo() {
-
-        return {
-            subject: getValue("subject"),
-            grade: getValue("grade"),
-            lesson: getValue("lesson"),
-            duration: getValue("duration"),
-            lessonPosition: getValue("lessonPosition"),
-            requirements: getValue("requirements"),
-            students: getValue("students"),
-            teachingConditions: getValue("teachingConditions"),
-            equipment: getValue("equipment"),
-            methodOrientation: getValue("methodOrientation"),
-            studentActivity: getValue("studentActivity"),
-            avoid: getValue("avoid")
-        };
+    // =====================================================
+    // TIỆN ÍCH
+    // =====================================================
+    function getValue(id) {
+        const el = document.getElementById(id);
+        return el ? el.value.trim() : "";
     }
 
-
-    function saveGeneralInfo() {
-
-        const data = collectGeneralInfo();
-
-        localStorage.setItem(
-            "teachingAssistantGeneralInfo",
-            JSON.stringify(data)
-        );
-
-        showToast("Đã lưu thông tin bài học.");
+    function setValue(id, val) {
+        const el = document.getElementById(id);
+        if (el) el.value = val || "";
     }
 
+    function showToast(msg) {
+        const toast = document.getElementById("toast");
+        if (!toast) return;
+        toast.textContent = msg;
+        toast.classList.add("show");
+        clearTimeout(showToast.timer);
+        showToast.timer = setTimeout(() => toast.classList.remove("show"), 2500);
+    }
 
-    function loadGeneralInfo() {
-
+    async function loadTextFile(filename) {
         try {
-
-            const saved = localStorage.getItem(
-                "teachingAssistantGeneralInfo"
-            );
-
-            if (!saved) return;
-
-            const data = JSON.parse(saved);
-
-            GENERAL_FIELDS.forEach(id => {
-
-                if (
-                    Object.prototype.hasOwnProperty.call(
-                        data,
-                        id
-                    )
-                ) {
-                    setValue(id, data[id]);
-                }
-
-            });
-
-        } catch (error) {
-
-            console.error(
-                "Không thể đọc thông tin đã lưu:",
-                error
-            );
-
+            const res = await fetch(filename, { cache: "no-store" });
+            return res.ok ? await res.text() : "";
+        } catch {
+            return "";
         }
     }
 
-
-    function clearGeneralInfo() {
-
-        const confirmed = confirm(
-            "Bạn có chắc muốn xóa toàn bộ thông tin bài học?"
-        );
-
-        if (!confirmed) return;
-
-        GENERAL_FIELDS.forEach(id => {
-            setValue(id, "");
+    // =====================================================
+    // CHỨC NĂNG THẺ 1: EXPORT & IMPORT THÔNG TIN (.TXT)
+    // =====================================================
+    function exportGeneralInfo() {
+        let content = "";
+        FIELD_MAP.forEach(item => {
+            const val = getValue(item.id);
+            content += `[${item.label}]\n${val}\n\n`;
         });
 
-        localStorage.removeItem(
-            "teachingAssistantGeneralInfo"
-        );
+        const lessonName = getValue("lesson") || "thong_tin_bai_hoc";
+        const filename = `${lessonName.replace(/[^a-zA-Z0-9_àáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệđìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵ]/g, "_")}.txt`;
 
-        showToast("Đã xóa thông tin.");
+        const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        link.click();
+        URL.revokeObjectURL(link.href);
+        showToast("Đã tải tệp thông tin bài học.");
     }
 
-
-    const btnSave = document.getElementById("btnSave");
-
-    if (btnSave) {
-        btnSave.addEventListener(
-            "click",
-            saveGeneralInfo
-        );
+    function importGeneralInfo(fileContent) {
+        FIELD_MAP.forEach(item => {
+            const pattern = new RegExp(`\\[${item.label}\\]\\r?\\n([\\s\\S]*?)(?=\\r?\\n\\[|$)`, "i");
+            const match = fileContent.match(pattern);
+            if (match) {
+                setValue(item.id, match[1].trim());
+            } else {
+                setValue(item.id, "");
+            }
+        });
+        showToast("Đã nhập thông tin từ file .txt thành công!");
     }
 
+    document.getElementById("btnExport")?.addEventListener("click", exportGeneralInfo);
 
-    const btnClear = document.getElementById("btnClear");
+    document.getElementById("btnImport")?.addEventListener("click", () => {
+        document.getElementById("importFile").click();
+    });
 
-    if (btnClear) {
-        btnClear.addEventListener(
-            "click",
-            clearGeneralInfo
-        );
+    document.getElementById("importFile")?.addEventListener("change", async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const text = await file.text();
+        importGeneralInfo(text);
+        e.target.value = "";
+    });
+
+    document.getElementById("btnSave")?.addEventListener("click", () => {
+        const data = {};
+        FIELD_MAP.forEach(f => data[f.id] = getValue(f.id));
+        localStorage.setItem("generalInfo", JSON.stringify(data));
+        showToast("Đã lưu thông tin vào trình duyệt!");
+    });
+
+    document.getElementById("btnClear")?.addEventListener("click", () => {
+        if (confirm("Bạn có chắc chắn muốn xóa toàn bộ dữ liệu đã nhập?")) {
+            FIELD_MAP.forEach(f => setValue(f.id, ""));
+            localStorage.removeItem("generalInfo");
+            showToast("Đã xóa toàn bộ thông tin!");
+        }
+    });
+
+    // Khôi phục từ LocalStorage nếu có
+    (function loadSavedGeneralInfo() {
+        const saved = localStorage.getItem("generalInfo");
+        if (saved) {
+            try {
+                const data = JSON.parse(saved);
+                FIELD_MAP.forEach(f => setValue(f.id, data[f.id] || ""));
+            } catch (e) {}
+        }
+    })();
+
+    // =====================================================
+    // CHỨC NĂNG CHUYỂN TAB (2 THẺ)
+    // =====================================================
+    const tabButtons = document.querySelectorAll(".tab-button");
+    const tabPanels = document.querySelectorAll(".tab-panel");
+
+    tabButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            tabButtons.forEach(b => b.classList.remove("active"));
+            tabPanels.forEach(p => p.classList.remove("active"));
+            btn.classList.add("active");
+            document.getElementById(`tab-${btn.dataset.tab}`)?.classList.add("active");
+        });
+    });
+
+    // =====================================================
+    // KHỞI TẠO PROMPT & MẪU GIÁO ÁN
+    // =====================================================
+    async function initTemplatesAndPrompts() {
+        lessonTemplateContent = localStorage.getItem("customLessonTemplate") || await loadTextFile(DEFAULT_LESSON_TEMPLATE);
+        prompt1Content = localStorage.getItem("customPrompt1") || await loadTextFile(DEFAULT_PROMPT1);
+        prompt2Content = localStorage.getItem("customPrompt2") || await loadTextFile(DEFAULT_PROMPT2);
+        prompt3Content = localStorage.getItem("customPrompt3") || await loadTextFile(DEFAULT_PROMPT3);
+    }
+    initTemplatesAndPrompts();
+
+    // Modal điều khiển
+    function openModal(title, text) {
+        document.querySelector("#templateModal h3").textContent = title;
+        document.getElementById("templatePreview").textContent = text || "Chưa có nội dung";
+        document.getElementById("templateModal").classList.add("show");
     }
 
+    document.getElementById("btnCloseModal")?.addEventListener("click", () => {
+        document.getElementById("templateModal").classList.remove("show");
+    });
 
-    loadGeneralInfo();
+    // Gắn sự kiện quản lý Mẫu giáo án
+    document.getElementById("btnUploadTemplate")?.addEventListener("click", () => document.getElementById("templateFile").click());
+    document.getElementById("templateFile")?.addEventListener("change", async (e) => {
+        if (e.target.files[0]) {
+            lessonTemplateContent = await e.target.files[0].text();
+            localStorage.setItem("customLessonTemplate", lessonTemplateContent);
+            showToast("Đã cập nhật mẫu giáo án mới!");
+        }
+    });
+    document.getElementById("btnPreviewTemplate")?.addEventListener("click", () => openModal("Mẫu giáo án & Phiếu bài tập", lessonTemplateContent));
+    document.getElementById("btnResetTemplate")?.addEventListener("click", async () => {
+        lessonTemplateContent = await loadTextFile(DEFAULT_LESSON_TEMPLATE);
+        localStorage.removeItem("customLessonTemplate");
+        showToast("Đã khôi phục mẫu mặc định!");
+    });
 
+    // Gắn sự kiện Prompt 1, 2, 3
+    function bindPromptEvents(idx, getVar, setVar, defaultFile, storageKey) {
+        document.getElementById(`btnUploadPrompt${idx}`)?.addEventListener("click", () => document.getElementById(`filePrompt${idx}`).click());
+        document.getElementById(`filePrompt${idx}`)?.addEventListener("change", async (e) => {
+            if (e.target.files[0]) {
+                setVar(await e.target.files[0].text());
+                localStorage.setItem(storageKey, getVar());
+                showToast(`Đã tải Prompt ${idx} mới!`);
+            }
+        });
+        document.getElementById(`btnViewPrompt${idx}`)?.addEventListener("click", () => openModal(`Prompt ${idx}`, getVar()));
+        document.getElementById(`btnResetPrompt${idx}`)?.addEventListener("click", async () => {
+            setVar(await loadTextFile(defaultFile));
+            localStorage.removeItem(storageKey);
+            showToast(`Đã khôi phục Prompt ${idx} mặc định!`);
+        });
+    }
 
-    /* =====================================================
-       TẠO KHỐI THÔNG TIN CHUNG CHO PROMPT
-    ===================================================== */
+    bindPromptEvents(1, () => prompt1Content, (v) => prompt1Content = v, DEFAULT_PROMPT1, "customPrompt1");
+    bindPromptEvents(2, () => prompt2Content, (v) => prompt2Content = v, DEFAULT_PROMPT2, "customPrompt2");
+    bindPromptEvents(3, () => prompt3Content, (v) => prompt3Content = v, DEFAULT_PROMPT3, "customPrompt3");
 
+    // =====================================================
+    // BUILD KHỐI THÔNG TIN DÙNG CHUNG
+    // =====================================================
     function buildGeneralInfoBlock() {
-
-        const data = collectGeneralInfo();
-
-        return `
-============================================================
-THÔNG TIN CHUNG VỀ BÀI HỌC
-============================================================
-
-Môn học:
-${data.subject || "[Chưa cung cấp]"}
-
-Lớp:
-${data.grade || "[Chưa cung cấp]"}
-
-Tên bài / chủ đề:
-${data.lesson || "[Chưa cung cấp]"}
-
-Thời lượng:
-${data.duration || "[Chưa cung cấp]"}
-
-Vị trí bài học:
-${data.lessonPosition || "[Chưa cung cấp]"}
-
-Yêu cầu cần đạt:
-${data.requirements || "[Chưa cung cấp]"}
-
-Đặc điểm học sinh:
-${data.students || "[Chưa cung cấp]"}
-
-Điều kiện lớp học:
-${data.teachingConditions || "[Chưa cung cấp]"}
-
-Thiết bị / phương tiện:
-${data.equipment || "[Chưa cung cấp]"}
-
-Định hướng dạy học:
-${data.methodOrientation || "[Chưa cung cấp]"}
-
-Mức độ hoạt động của học sinh:
-${data.studentActivity || "[Chưa cung cấp]"}
-
-Những điều muốn tránh:
-${data.avoid || "[Chưa cung cấp]"}
-
-============================================================
-`;
-    }
-
-
-    /* =====================================================
-       TAB
-    ===================================================== */
-
-    const tabButtons =
-        document.querySelectorAll(".tab-button");
-
-    const tabPanels =
-        document.querySelectorAll(".tab-panel");
-
-
-    tabButtons.forEach(button => {
-
-        button.addEventListener("click", () => {
-
-            const tabName =
-                button.dataset.tab;
-
-            tabButtons.forEach(btn => {
-                btn.classList.remove("active");
-            });
-
-            tabPanels.forEach(panel => {
-                panel.classList.remove("active");
-            });
-
-            button.classList.add("active");
-
-            const target =
-                document.getElementById(
-                    `tab-${tabName}`
-                );
-
-            if (target) {
-                target.classList.add("active");
-            }
-
+        let block = "============================================================\n";
+        block += "THÔNG TIN CHUNG VỀ BÀI HỌC\n";
+        block += "============================================================\n\n";
+        FIELD_MAP.forEach(item => {
+            const val = getValue(item.id);
+            block += `${item.label}:\n${val || "[Chưa cung cấp]"}\n\n`;
         });
-
-    });
-
-
-    /* =====================================================
-       LỰA CHỌN FIRST / NEXT
-    ===================================================== */
-
-    const promptTypeRadios =
-        document.querySelectorAll(
-            'input[name="promptType"]'
-        );
-
-
-    function updateTaskOptionStyle() {
-
-        const options =
-            document.querySelectorAll(
-                ".task-option"
-            );
-
-        options.forEach(option => {
-
-            const radio =
-                option.querySelector(
-                    'input[type="radio"]'
-                );
-
-            if (!radio) return;
-
-            option.classList.toggle(
-                "selected",
-                radio.checked
-            );
-
-        });
-
+        return block;
     }
 
-
-    promptTypeRadios.forEach(radio => {
-
-        radio.addEventListener(
-            "change",
-            updateTaskOptionStyle
-        );
-
-    });
-
-
-    updateTaskOptionStyle();
-
-
-    /* =====================================================
-       MẪU GIÁO ÁN
-    ===================================================== */
-
-    async function initializeLessonTemplate() {
-
-        const savedContent =
-            localStorage.getItem(
-                "lessonTemplateContent"
-            );
-
-        const savedName =
-            localStorage.getItem(
-                "lessonTemplateName"
-            );
-
-        if (savedContent) {
-
-            lessonTemplateContent =
-                savedContent;
-
-            lessonTemplateName =
-                savedName ||
-                DEFAULT_LESSON_TEMPLATE;
-
-        } else {
-
-            const content =
-                await loadTextFile(
-                    DEFAULT_LESSON_TEMPLATE
-                );
-
-            lessonTemplateContent =
-                content;
-
-            lessonTemplateName =
-                DEFAULT_LESSON_TEMPLATE;
-        }
-
-        updateLessonTemplateUI();
-
-        updateWorksheetTemplateUI();
+    function buildTemplateBlock() {
+        if (!lessonTemplateContent.trim()) return "";
+        return "============================================================\n" +
+               "MẪU GIÁO ÁN VÀ PHIẾU BÀI TẬP THAM CHIẾU\n" +
+               "============================================================\n\n" +
+               lessonTemplateContent + "\n\n";
     }
 
-
-    function updateLessonTemplateUI() {
-
-        const fileName =
-            document.getElementById(
-                "templateFileName"
-            );
-
-        if (fileName) {
-            fileName.textContent =
-                lessonTemplateName;
-        }
-
-
-        const status =
-            document.getElementById(
-                "templateStatus"
-            );
-
-        if (status) {
-
-            if (lessonTemplateContent.trim()) {
-
-                status.textContent =
-                    `Đang sử dụng: ${lessonTemplateName}`;
-
-            } else {
-
-                status.textContent =
-                    "Chưa có mẫu giáo án.";
-            }
-
-        }
-    }
-
-
-    function updateWorksheetTemplateUI() {
-
-        const fileName =
-            document.getElementById(
-                "worksheetTemplateFileName"
-            );
-
-        if (fileName) {
-
-            fileName.textContent =
-                lessonTemplateName;
-        }
-
-
-        const status =
-            document.getElementById(
-                "worksheetTemplateStatus"
-            );
-
-        if (status) {
-
-            if (lessonTemplateContent.trim()) {
-
-                status.textContent =
-                    `Mẫu giáo án được kế thừa: ${lessonTemplateName}`;
-
-            } else {
-
-                status.textContent =
-                    "Chưa có mẫu giáo án để kế thừa.";
-            }
-
-        }
-    }
-
-
-    /* =====================================================
-       TẢI MẪU GIÁO ÁN MỚI
-    ===================================================== */
-
-    const templateFile =
-        document.getElementById(
-            "templateFile"
-        );
-
-
-    if (templateFile) {
-
-        templateFile.addEventListener(
-            "change",
-            async event => {
-
-                const file =
-                    event.target.files[0];
-
-                if (!file) return;
-
-                const content =
-                    await readUploadedText(file);
-
-                if (!content.trim()) {
-
-                    showToast(
-                        "File mẫu giáo án không có nội dung."
-                    );
-
-                    return;
-                }
-
-                lessonTemplateContent =
-                    content;
-
-                lessonTemplateName =
-                    file.name;
-
-                localStorage.setItem(
-                    "lessonTemplateContent",
-                    lessonTemplateContent
-                );
-
-                localStorage.setItem(
-                    "lessonTemplateName",
-                    lessonTemplateName
-                );
-
-                updateLessonTemplateUI();
-                updateWorksheetTemplateUI();
-
-                showToast(
-                    "Đã tải mẫu giáo án mới."
-                );
-
-                templateFile.value = "";
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       XEM MẪU GIÁO ÁN
-    ===================================================== */
-
-    function openTemplateModal(
-        title,
-        content
-    ) {
-
-        const modal =
-            document.getElementById(
-                "templateModal"
-            );
-
-        const preview =
-            document.getElementById(
-                "templatePreview"
-            );
-
-        const header =
-            modal?.querySelector(
-                ".modal-header h3"
-            );
-
-
-        if (header) {
-            header.textContent =
-                title;
-        }
-
-        if (preview) {
-            preview.textContent =
-                content ||
-                "Chưa có nội dung.";
-        }
-
-        if (modal) {
-            modal.classList.add("show");
-        }
-    }
-
-
-    function closeTemplateModal() {
-
-        const modal =
-            document.getElementById(
-                "templateModal"
-            );
-
-        if (modal) {
-            modal.classList.remove("show");
-        }
-    }
-
-
-    const btnPreviewTemplate =
-        document.getElementById(
-            "btnPreviewTemplate"
-        );
-
-
-    if (btnPreviewTemplate) {
-
-        btnPreviewTemplate.addEventListener(
-            "click",
-            () => {
-
-                openTemplateModal(
-                    "Nội dung mẫu giáo án",
-                    lessonTemplateContent
-                );
-
-            }
-        );
-
-    }
-
-
-    const btnCloseModal =
-        document.getElementById(
-            "btnCloseModal"
-        );
-
-
-    if (btnCloseModal) {
-        btnCloseModal.addEventListener(
-            "click",
-            closeTemplateModal
-        );
-    }
-
-
-    const templateModal =
-        document.getElementById(
-            "templateModal"
-        );
-
-
-    if (templateModal) {
-
-        templateModal.addEventListener(
-            "click",
-            event => {
-
-                if (
-                    event.target ===
-                    templateModal
-                ) {
-                    closeTemplateModal();
-                }
-
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       KHÔI PHỤC MẪU GIÁO ÁN
-    ===================================================== */
-
-    const btnRestoreTemplate =
-        document.getElementById(
-            "btnRestoreTemplate"
-        );
-
-
-    if (btnRestoreTemplate) {
-
-        btnRestoreTemplate.addEventListener(
-            "click",
-            async () => {
-
-                const content =
-                    await loadTextFile(
-                        DEFAULT_LESSON_TEMPLATE
-                    );
-
-                if (!content.trim()) {
-
-                    showToast(
-                        "Không tìm thấy mau_giao_an.txt."
-                    );
-
-                    return;
-                }
-
-                lessonTemplateContent =
-                    content;
-
-                lessonTemplateName =
-                    DEFAULT_LESSON_TEMPLATE;
-
-                localStorage.removeItem(
-                    "lessonTemplateContent"
-                );
-
-                localStorage.removeItem(
-                    "lessonTemplateName"
-                );
-
-                updateLessonTemplateUI();
-                updateWorksheetTemplateUI();
-
-                showToast(
-                    "Đã khôi phục mẫu giáo án mặc định."
-                );
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       XÓA MẪU GIÁO ÁN
-    ===================================================== */
-
-    const btnClearTemplate =
-        document.getElementById(
-            "btnClearTemplate"
-        );
-
-
-    if (btnClearTemplate) {
-
-        btnClearTemplate.addEventListener(
-            "click",
-            () => {
-
-                const confirmed =
-                    confirm(
-                        "Bạn có chắc muốn xóa mẫu giáo án hiện tại?"
-                    );
-
-                if (!confirmed) return;
-
-                lessonTemplateContent = "";
-                lessonTemplateName = "";
-
-                localStorage.removeItem(
-                    "lessonTemplateContent"
-                );
-
-                localStorage.removeItem(
-                    "lessonTemplateName"
-                );
-
-                updateLessonTemplateUI();
-                updateWorksheetTemplateUI();
-
-                showToast(
-                    "Đã xóa mẫu giáo án."
-                );
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       PROMPT MẪU PHIẾU BÀI TẬP
-    ===================================================== */
-
-    async function initializeWorksheetPrompt() {
-
-        const savedContent =
-            localStorage.getItem(
-                "worksheetPromptContent"
-            );
-
-        const savedName =
-            localStorage.getItem(
-                "worksheetPromptName"
-            );
-
-
-        if (savedContent) {
-
-            worksheetPromptContent =
-                savedContent;
-
-            worksheetPromptName =
-                savedName ||
-                THIRD_PROMPT_FILE;
-
-        } else {
-
-            const content =
-                await loadTextFile(
-                    THIRD_PROMPT_FILE
-                );
-
-            worksheetPromptContent =
-                content;
-
-            worksheetPromptName =
-                THIRD_PROMPT_FILE;
-        }
-
-
-        updateWorksheetPromptUI();
-    }
-
-
-    function updateWorksheetPromptUI() {
-
-        const fileName =
-            document.getElementById(
-                "worksheetPromptFileName"
-            );
-
-        if (fileName) {
-
-            fileName.textContent =
-                worksheetPromptName ||
-                "Chưa có Prompt mẫu";
-        }
-
-
-        const status =
-            document.getElementById(
-                "worksheetPromptStatus"
-            );
-
-        if (status) {
-
-            if (worksheetPromptContent.trim()) {
-
-                status.textContent =
-                    `Đang sử dụng: ${worksheetPromptName}`;
-
-            } else {
-
-                status.textContent =
-                    "Chưa có Prompt mẫu.";
-            }
-
-        }
-
-    }
-
-
-    /* =====================================================
-       TẢI PROMPT MẪU PHIẾU BÀI TẬP
-    ===================================================== */
-
-    const worksheetPromptFile =
-        document.getElementById(
-            "worksheetPromptFile"
-        );
-
-
-    if (worksheetPromptFile) {
-
-        worksheetPromptFile.addEventListener(
-            "change",
-            async event => {
-
-                const file =
-                    event.target.files[0];
-
-                if (!file) return;
-
-                const content =
-                    await readUploadedText(file);
-
-                if (!content.trim()) {
-
-                    showToast(
-                        "File Prompt mẫu không có nội dung."
-                    );
-
-                    return;
-                }
-
-
-                worksheetPromptContent =
-                    content;
-
-                worksheetPromptName =
-                    file.name;
-
-
-                localStorage.setItem(
-                    "worksheetPromptContent",
-                    worksheetPromptContent
-                );
-
-                localStorage.setItem(
-                    "worksheetPromptName",
-                    worksheetPromptName
-                );
-
-
-                updateWorksheetPromptUI();
-
-
-                showToast(
-                    "Đã tải Prompt mẫu mới."
-                );
-
-
-                worksheetPromptFile.value = "";
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       XEM PROMPT MẪU PHIẾU
-    ===================================================== */
-
-    const btnPreviewWorksheetPrompt =
-        document.getElementById(
-            "btnPreviewWorksheetPrompt"
-        );
-
-
-    if (btnPreviewWorksheetPrompt) {
-
-        btnPreviewWorksheetPrompt.addEventListener(
-            "click",
-            () => {
-
-                openTemplateModal(
-                    "Nội dung Prompt mẫu phiếu bài tập",
-                    worksheetPromptContent
-                );
-
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       KHÔI PHỤC THIRD_PROMPT
-    ===================================================== */
-
-    const btnRestoreWorksheetPrompt =
-        document.getElementById(
-            "btnRestoreWorksheetPrompt"
-        );
-
-
-    if (btnRestoreWorksheetPrompt) {
-
-        btnRestoreWorksheetPrompt.addEventListener(
-            "click",
-            async () => {
-
-                const content =
-                    await loadTextFile(
-                        THIRD_PROMPT_FILE
-                    );
-
-                if (!content.trim()) {
-
-                    showToast(
-                        "Không tìm thấy third_prompt.txt."
-                    );
-
-                    return;
-                }
-
-
-                worksheetPromptContent =
-                    content;
-
-                worksheetPromptName =
-                    THIRD_PROMPT_FILE;
-
-
-                localStorage.removeItem(
-                    "worksheetPromptContent"
-                );
-
-                localStorage.removeItem(
-                    "worksheetPromptName"
-                );
-
-
-                updateWorksheetPromptUI();
-
-
-                showToast(
-                    "Đã khôi phục third_prompt.txt."
-                );
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       XÓA PROMPT MẪU
-    ===================================================== */
-
-    const btnClearWorksheetPrompt =
-        document.getElementById(
-            "btnClearWorksheetPrompt"
-        );
-
-
-    if (btnClearWorksheetPrompt) {
-
-        btnClearWorksheetPrompt.addEventListener(
-            "click",
-            () => {
-
-                const confirmed =
-                    confirm(
-                        "Bạn có chắc muốn xóa Prompt mẫu phiếu bài tập?"
-                    );
-
-                if (!confirmed) return;
-
-
-                worksheetPromptContent = "";
-                worksheetPromptName = "";
-
-
-                localStorage.removeItem(
-                    "worksheetPromptContent"
-                );
-
-                localStorage.removeItem(
-                    "worksheetPromptName"
-                );
-
-
-                updateWorksheetPromptUI();
-
-
-                showToast(
-                    "Đã xóa Prompt mẫu."
-                );
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       TẠO PROMPT KẾ HOẠCH BÀI GIẢNG
-    ===================================================== */
-
-    async function generateLessonPlanPrompt() {
-
-        const output =
-            document.getElementById(
-                "lessonPromptOutput"
-            );
-
-        if (!output) return;
-
-
-        const selected =
-            document.querySelector(
-                'input[name="promptType"]:checked'
-            );
-
-
-        const promptType =
-            selected
-                ? selected.value
-                : "first";
-
-
-        let basePrompt = "";
-
-
-        if (promptType === "first") {
-
-            basePrompt =
-                await loadTextFile(
-                    FIRST_PROMPT_FILE
-                );
-
-            if (!basePrompt.trim()) {
-
-                showToast(
-                    "Không tìm thấy first_prompt.txt."
-                );
-
-                return;
-            }
-
-        } else {
-
-            basePrompt =
-                await loadTextFile(
-                    SECOND_PROMPT_FILE
-                );
-
-            if (!basePrompt.trim()) {
-
-                showToast(
-                    "Không tìm thấy second_prompt.txt."
-                );
-
-                return;
-            }
-
-        }
-
-
-        const infoBlock =
-            buildGeneralInfoBlock();
-
-
-        const templateBlock =
-            lessonTemplateContent.trim()
-                ? `
-============================================================
-MẪU GIÁO ÁN HIỆN ĐANG SỬ DỤNG
-============================================================
-
-Tên file:
-${lessonTemplateName}
-
-Nội dung mẫu:
-${lessonTemplateContent}
-
-============================================================
-`
-                : `
-============================================================
-MẪU GIÁO ÁN
-============================================================
-
-Hiện chưa có mẫu giáo án.
-
-============================================================
-`;
-
-
-        const finalPrompt = `
-
-${basePrompt.trim()}
-
-${infoBlock}
-
-${templateBlock}
-`;
-
-
-        output.value =
-            finalPrompt.trim();
-
-
-        output.scrollTop = 0;
-
-
-        showToast(
-            promptType === "first"
-                ? "Đã tạo Prompt lần 1."
-                : "Đã tạo Prompt cho lượt tiếp theo."
-        );
-
-    }
-
-
-    const btnGenerateLessonPlan =
-        document.getElementById(
-            "btnGenerateLessonPlan"
-        );
-
-
-    if (btnGenerateLessonPlan) {
-
-        btnGenerateLessonPlan.addEventListener(
-            "click",
-            generateLessonPlanPrompt
-        );
-
-    }
-
-
-    /* =====================================================
-       SAO CHÉP PROMPT GIÁO ÁN
-    ===================================================== */
-
-    const btnCopyLessonPrompt =
-        document.getElementById(
-            "btnCopyLessonPrompt"
-        );
-
-
-    if (btnCopyLessonPrompt) {
-
-        btnCopyLessonPrompt.addEventListener(
-            "click",
-            () => {
-
-                const output =
-                    document.getElementById(
-                        "lessonPromptOutput"
-                    );
-
-                copyText(
-                    output
-                        ? output.value
-                        : ""
-                );
-
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       TẢI PROMPT GIÁO ÁN
-    ===================================================== */
-
-    const btnDownloadLessonPrompt =
-        document.getElementById(
-            "btnDownloadLessonPrompt"
-        );
-
-
-    if (btnDownloadLessonPrompt) {
-
-        btnDownloadLessonPrompt.addEventListener(
-            "click",
-            () => {
-
-                const output =
-                    document.getElementById(
-                        "lessonPromptOutput"
-                    );
-
-                downloadText(
-                    "prompt_ke_hoach_bai_giang.txt",
-                    output
-                        ? output.value
-                        : ""
-                );
-
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       TẠO PROMPT PHIẾU BÀI TẬP
-    ===================================================== */
-
-    function generateWorksheetPrompt() {
-
-        const output =
-            document.getElementById(
-                "worksheetPromptOutput"
-            );
-
-        if (!output) return;
-
-
-        if (!worksheetPromptContent.trim()) {
-
-            showToast(
-                "Chưa có Prompt mẫu phiếu bài tập."
-            );
-
+    // =====================================================
+    // NÚT TẠO PROMPT VÀ XUẤT TỆP ZIP
+    // =====================================================
+    document.getElementById("btnGenerateZip")?.addEventListener("click", async () => {
+        if (typeof JSZip === "undefined") {
+            showToast("Đang tải thư viện tạo zip, vui lòng thử lại sau vài giây...");
             return;
         }
 
+        const zip = new JSZip();
+        const lessonName = getValue("lesson") || "bai_hoc";
+        const safeLessonName = lessonName.replace(/[^a-zA-Z0-9_àáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệđìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵ]/g, "_");
 
-        const infoBlock =
-            buildGeneralInfoBlock();
+        const generalInfo = buildGeneralInfoBlock();
+        const templateInfo = buildTemplateBlock();
 
+        // 1. Prompt 1 (first_prompt.txt)
+        const fullPrompt1 = prompt1Content + "\n\n" + generalInfo + templateInfo;
+        zip.file(`1_Prompt_xay_dung_y_tuong_${safeLessonName}.txt`, fullPrompt1);
 
-        const templateBlock =
-            lessonTemplateContent.trim()
-                ? `
-============================================================
-MẪU GIÁO ÁN ĐƯỢC KẾ THỪA
-============================================================
+        // 2. Prompt 2 (second_prompt.txt)
+        const fullPrompt2 = prompt2Content + "\n\n" + generalInfo + templateInfo;
+        zip.file(`2_Prompt_thiet_ke_chi_tiet_pha_${safeLessonName}.txt`, fullPrompt2);
 
-Tên file:
-${lessonTemplateName}
+        // 3. Prompt 3 (third_prompt.txt)
+        const fullPrompt3 = prompt3Content + "\n\n" + generalInfo + templateInfo;
+        zip.file(`3_Prompt_thiet_ke_phieu_hoat_dong_${safeLessonName}.txt`, fullPrompt3);
 
-Nội dung mẫu:
-${lessonTemplateContent}
-
-============================================================
-`
-                : `
-============================================================
-MẪU GIÁO ÁN ĐƯỢC KẾ THỪA
-============================================================
-
-Hiện chưa có mẫu giáo án.
-
-============================================================
-`;
-
-
-        const finalPrompt = `
-
-${worksheetPromptContent.trim()}
-
-${infoBlock}
-
-${templateBlock}
-
-============================================================
-LƯU Ý VỀ TÀI LIỆU KẾ HOẠCH BÀI GIẢNG
-============================================================
-
-Ứng dụng này không trực tiếp đọc hoặc xử lý
-kế hoạch bài giảng.
-
-Khi sử dụng Prompt này với AI, giáo viên cần
-cung cấp kế hoạch bài giảng trong cùng cuộc trò chuyện
-để AI sử dụng làm nguồn dữ liệu đầu vào.
-
-Không được giả định nội dung kế hoạch bài giảng
-nếu giáo viên chưa cung cấp tài liệu đó.
-
-============================================================
-`;
-
-
-        output.value =
-            finalPrompt.trim();
-
-
-        output.scrollTop = 0;
-
-
-        showToast(
-            "Đã tạo Prompt phiếu bài tập."
-        );
-
-    }
-
-
-    const btnGenerateWorksheet =
-        document.getElementById(
-            "btnGenerateWorksheet"
-        );
-
-
-    if (btnGenerateWorksheet) {
-
-        btnGenerateWorksheet.addEventListener(
-            "click",
-            generateWorksheetPrompt
-        );
-
-    }
-
-
-    /* =====================================================
-       SAO CHÉP PROMPT PHIẾU
-    ===================================================== */
-
-    const btnCopyWorksheetPrompt =
-        document.getElementById(
-            "btnCopyWorksheetPrompt"
-        );
-
-
-    if (btnCopyWorksheetPrompt) {
-
-        btnCopyWorksheetPrompt.addEventListener(
-            "click",
-            () => {
-
-                const output =
-                    document.getElementById(
-                        "worksheetPromptOutput"
-                    );
-
-                copyText(
-                    output
-                        ? output.value
-                        : ""
-                );
-
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       TẢI PROMPT PHIẾU
-    ===================================================== */
-
-    const btnDownloadWorksheetPrompt =
-        document.getElementById(
-            "btnDownloadWorksheetPrompt"
-        );
-
-
-    if (btnDownloadWorksheetPrompt) {
-
-        btnDownloadWorksheetPrompt.addEventListener(
-            "click",
-            () => {
-
-                const output =
-                    document.getElementById(
-                        "worksheetPromptOutput"
-                    );
-
-                downloadText(
-                    "prompt_phieu_bai_tap.txt",
-                    output
-                        ? output.value
-                        : ""
-                );
-
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       KHỞI TẠO
-    ===================================================== */
-
-    initializeLessonTemplate();
-
-    initializeWorksheetPrompt();
-
-
-    /* =====================================================
-       ESC ĐÓNG MODAL
-    ===================================================== */
-
-    document.addEventListener(
-        "keydown",
-        event => {
-
-            if (event.key === "Escape") {
-                closeTemplateModal();
-            }
-
-        }
-    );
-
-});
+        // Xuất tệp ZIP
+        const blob = await zip.generateAsync({ type: "blob" });
+        const link = document.createElement("a
