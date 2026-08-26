@@ -261,4 +261,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Xuất tệp ZIP
         const blob = await zip.generateAsync({ type: "blob" });
-        const link = document.createElement("a
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `Bo_Prompt_KHBG_${safeLessonName}.zip`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+
+        showToast("Đã tải xuống gói .ZIP gồm 3 tệp Prompt!");
+    });
+
+});
