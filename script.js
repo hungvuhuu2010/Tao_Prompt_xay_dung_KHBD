@@ -234,6 +234,31 @@ document.addEventListener("DOMContentLoaded", () => {
     // =====================================================
     // NÚT TẠO PROMPT VÀ XUẤT TỆP ZIP
     // =====================================================
+    // =====================================================
+    // HÀM THAY THẾ BIẾN CẤU HÌNH VÀO NỘI DUNG PROMPT
+    // =====================================================
+    function populatePromptVariables(templateStr) {
+        if (!templateStr) return "";
+
+        let result = templateStr;
+
+        // Replace từng tham số trong form
+        FIELD_MAP.forEach(item => {
+            const val = getValue(item.id) || "[Chưa cung cấp]";
+            const regex = new RegExp(`\\{${item.label}\\}`, "g");
+            result = result.replace(regex, val);
+        });
+
+        // Replace mẫu giáo án tham chiếu
+        const templateVal = lessonTemplateContent.trim() || "[Chưa có mẫu giáo án]";
+        result = result.replace(/\{MẪU GIÁO ÁN THAM CHIẾU\}/g, templateVal);
+
+        return result;
+    }
+
+    // =====================================================
+    // NÚT TẠO PROMPT VÀ XUẤT TỆP ZIP
+    // =====================================================
     document.getElementById("btnGenerateZip")?.addEventListener("click", async () => {
         if (typeof JSZip === "undefined") {
             showToast("Đang tải thư viện tạo zip, vui lòng thử lại sau vài giây...");
@@ -247,16 +272,21 @@ document.addEventListener("DOMContentLoaded", () => {
         const generalInfo = buildGeneralInfoBlock();
         const templateInfo = buildTemplateBlock();
 
+        // Ghép biến vào nội dung Prompt gốc trước khi đóng gói
+        const filledPrompt1 = populatePromptVariables(prompt1Content);
+        const filledPrompt2 = populatePromptVariables(prompt2Content);
+        const filledPrompt3 = populatePromptVariables(prompt3Content);
+
         // 1. Prompt 1 (first_prompt.txt)
-        const fullPrompt1 = prompt1Content + "\n\n" + generalInfo + templateInfo;
+        const fullPrompt1 = filledPrompt1 + "\n\n" + generalInfo + templateInfo;
         zip.file(`1_Prompt_xay_dung_y_tuong_${safeLessonName}.txt`, fullPrompt1);
 
         // 2. Prompt 2 (second_prompt.txt)
-        const fullPrompt2 = prompt2Content + "\n\n" + generalInfo + templateInfo;
+        const fullPrompt2 = filledPrompt2 + "\n\n" + generalInfo + templateInfo;
         zip.file(`2_Prompt_thiet_ke_chi_tiet_pha_${safeLessonName}.txt`, fullPrompt2);
 
         // 3. Prompt 3 (third_prompt.txt)
-        const fullPrompt3 = prompt3Content + "\n\n" + generalInfo + templateInfo;
+        const fullPrompt3 = filledPrompt3 + "\n\n" + generalInfo + templateInfo;
         zip.file(`3_Prompt_thiet_ke_phieu_hoat_dong_${safeLessonName}.txt`, fullPrompt3);
 
         // Xuất tệp ZIP
